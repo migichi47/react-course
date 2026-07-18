@@ -74,6 +74,17 @@
         overflow: scroll;
         scrollbar-width: none;
       }
+
+      .welcome-message {
+        display: flex;
+        color: rgb(120, 120, 120);
+        justify-content: center;
+      }
+
+      .loading-spinner {
+        height: 40px;
+        margin: -15px;
+      }
     </style>
   </head>
 
@@ -116,7 +127,17 @@
           ];
 
           setInputText("");
-          setChatMessages(newChatMessages);
+          setChatMessages([
+            ...newChatMessages,
+            {
+              message: <img
+                src="/loading-spinner.gif"
+                className="loading-spinner"
+              />,
+              sender: "robot",
+              id: crypto.randomUUID(),
+            },
+          ])
           const response = await Chatbot.getResponseAsync(inputText);
 
           setChatMessages([
@@ -174,45 +195,30 @@
           }
         }, [chatMessages]);
 
-        return (
-          <div className="chat-messages-container"
-          ref={chatMessagesRef}>
-            {chatMessages.map((chatMessage) => {
-              return (
-                <ChatMessage
-                  message={chatMessage.message}
-                  sender={chatMessage.sender}
-                  key={chatMessage.id}
-                />
-              );
-            })}
-          </div>
-        );
-      }
+        if (chatMessages.length) {
+          return <div className="chat-messages-container"
+              ref={chatMessagesRef}>
+              {chatMessages.map((chatMessage) => {
+                return (
+                  <ChatMessage
+                    message={chatMessage.message}
+                    sender={chatMessage.sender}
+                    key={chatMessage.id}
+                  />
+                );
+              })}
+            </div>
+          }else {
+            return <div className="chat-messages-container">
+              <div className="welcome-message">
+                Welcome to the chatbot project!
+                Send a message using the textbox below.
+              </div>
+            </div>
+          }}
 
       function App() {
-        const [chatMessages, setChatMessages] = React.useState([
-          {
-            message: "hello chatbot",
-            sender: "user",
-            id: "1",
-          },
-          {
-            message: "Hello! How can I help you?",
-            sender: "robot",
-            id: "2",
-          },
-          {
-            message: "can you get me today's date?",
-            sender: "user",
-            id: "3",
-          },
-          {
-            message: "Today is July 15",
-            sender: "robot",
-            id: "4",
-          },
-        ]);
+        const [chatMessages, setChatMessages] = React.useState([]);
 
         return (
           <div className="app-container">
