@@ -29,3 +29,8 @@
   height: 40px;
   margin: -15px;
 }
+
+.time-sent {
+  opacity: 0.5;
+  font-size: 12px;
+}

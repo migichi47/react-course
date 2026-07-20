@@ -3,6 +3,7 @@ import { Chatbot } from "supersimpledev";
 import LoadingSpinner from "../assets/loading-spinner.gif";
 
 import './ChatInput.css';
+import dayjs from 'dayjs';
 
 
 export function ChatInput({ chatMessages, setChatMessages }) {
@@ -29,6 +30,7 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         message: inputText,
         sender: "user",
         id: crypto.randomUUID(),
+        timeSent: dayjs().format('h:mm a'),
       },
     ];
 
@@ -41,6 +43,7 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         ),
         sender: "robot",
         id: crypto.randomUUID(),
+        timeSent: '',
       },
     ]);
     const response = await Chatbot.getResponseAsync(inputText);
@@ -51,6 +54,7 @@ export function ChatInput({ chatMessages, setChatMessages }) {
         message: response,
         sender: "robot",
         id: crypto.randomUUID(),
+        timeSent: dayjs().format('h:mm a'),
       },
     ]);
   }
